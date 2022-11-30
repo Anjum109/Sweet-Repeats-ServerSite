@@ -245,6 +245,27 @@ async function run() {
             res.send(result);
         })
 
+        // verified seller
+        app.put('/users/Seller/:id', verifyJWT, async (req, res) => {
+            const decodedEmail = req.decoded.email;
+            const query = { email: decodedEmail };
+            const user = await usersCollection.findOne(query);
+            if (user?.role !== 'admin') {
+                return res.status(403).send({ message: 'forbidden access' })
+            }
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    verify: 'true',
+                }
+            }
+            const result = await usersCollection.updateOne(filter, updateDoc, options);
+            res.send(result);
+        })
+
+
         app.get('/jwt', async (req, res) => {
             const email = req.query.email;
             const query = { email: email };
