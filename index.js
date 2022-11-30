@@ -51,8 +51,8 @@ async function run() {
         })
 
         // app.get('/category', async (req, res) => {
-        //     const query = {};
-        //     const options = await productCollections.find(query).toArray();
+        const query = {};
+        const options = await productCollections.find(query).toArray();
         //     res.send(options);
         // })
 
